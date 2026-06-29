@@ -1,95 +1,36 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فهرس الفصول - المنصة الشاملة</title>
+<title>فهرس فصول - القانون الدولي الانساني</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Cairo,sans-serif;background:#080808;color:#f8fafc;padding:20px;min-height:100vh}
-.header{text-align:center;padding:30px 0}
-h1{color:#d4af37;font-size:1.8rem;margin-bottom:5px;text-shadow:0 0 15px rgba(212,175,55,0.4)}
-.book-name{color:#a67c00;font-weight:bold;font-size:1.1rem;margin-bottom:25px}
-.container{max-width:650px;margin:0 auto;display:flex;flex-direction:column;gap:12px;padding-bottom:60px}
-.chapter-card{display:flex;gap:15px;align-items:center;padding:16px 20px;text-decoration:none;color:#fff;background:#141414;border:1px solid rgba(212,175,55,.15);border-radius:14px;transition:all 0.3s ease}
-.chapter-card:hover{transform:scale(1.02);border-color:#d4af37;background:rgba(212,175,55,0.05)}
-.chapter-icon{width:32px;height:32px;border-radius:50%;background:#d4af37;color:#080808;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.9rem}
-.chapter-title{flex:1;font-size:1.05rem;font-weight:bold}
-.telegram-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#a67c00,#d4af37);color:#080808;padding:16px 30px;border-radius:50px;text-decoration:none;font-weight:bold;margin-top:35px;align-self:center;text-align:center}
-.loading{text-align:center;color:#d4af37;font-size:1.1rem}
-</style></head>
+  body { font-family: "Cairo", sans-serif; background: #080808; color: #f8fafc; padding: 20px; margin: 0; min-height: 100vh; }
+  .header { text-align: center; padding: 30px 0; }
+  h1 { color: #d4af37; font-size: 1.8rem; margin-bottom: 5px; text-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+  .book-name { color: #a67c00; font-size: 1.1rem; font-weight: bold; margin-bottom: 25px; letter-spacing: 1px; }
+  .container { max-width: 650px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; padding-bottom: 60px; }
+  .chapter-card { background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(212, 175, 55, 0.1); border-radius: 14px; padding: 16px 20px; text-decoration: none; transition: all 0.3s ease; display: flex; align-items: center; gap: 15px; }
+  .chapter-card:hover { transform: scale(1.02); border-color: #d4af37; background: rgba(212, 175, 55, 0.05); }
+  .chapter-title { color: #f8fafc; font-size: 1.05rem; font-weight: bold; flex-grow: 1; }
+  .chapter-icon { background: #d4af37; color: #080808; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 0.85rem; font-weight: 700; order: -1; }
+  .telegram-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #a67c00, #d4af37); color: #080808; padding: 16px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 35px; align-self: center; }
+  .footer { text-align: center; margin-top: 40px; font-size: 0.7rem; color: #444; }
+</style>
+</head>
 <body>
-
 <div class="header">
-    <h1>فهرس فصول الكتاب</h1>
-    <div class="book-name" id="dynamic-book-name">جاري تحميل اسم المادة...</div>
+  <h1>فهرس فصول الكتاب</h1>
+  <div class="book-name">القانون الدولي الانساني</div>
 </div>
-
-<div class="container" id="chapters-container">
-    <div class="loading">جاري قراءة الفصول وعناوينها تلقائياً...</div>
+<div class="container">
+  <a href="ch01.html" class="chapter-card">
+    <span class="chapter-icon">1</span>
+    <span class="chapter-title">١٠٠ سؤال في القانون الدولي الإنساني</span>
+  </a>
+  <a href="https://t.me/M5M5P" class="telegram-btn">انضم لقناة التليجرام ✈️</a>
+  <div class="footer">تم التحديث بواسطة فاعل خير</div>
 </div>
-
-<script>
-function getRepoName() {
-    const pathSegments = window.location.pathname.split('/');
-    return pathSegments[1] || "";
-}
-
-async function loadChapters(){
-    const container = document.getElementById("chapters-container");
-    const bookNameEl = document.getElementById("dynamic-book-name");
-    container.innerHTML = "";
-    
-    let currentRepo = getRepoName();
-    bookNameEl.innerText = currentRepo.replace('law-', '').replace(/-/g, ' ').toUpperCase();
-
-    let found = false;
-    let idx = 1;
-    const timestamp = new Date().getTime();
-
-    for(let i = 1; i <= 40; i++){
-        const n = i < 10 ? "0" + i : i;
-        const fileName = `ch${n}.html`;
-        
-        try {
-            const response = await fetch(`./${fileName}?t=${timestamp}`);
-            if(response.ok){
-                found = true;
-                const text = await response.text();
-                
-                const match = text.match(/<title>([^<]*)<\/title>/i);
-                let title = match && match[1] ? match[1].trim() : `اختبار الفصل ${n}`;
-                
-                if(title.includes("ملف خاص بالتعديلات")) {
-                    title = `اختبار الفصل ${n}`;
-                }
-
-                const card = document.createElement("a");
-                card.className = "chapter-card";
-                card.href = fileName;
-                card.innerHTML = `
-                    <span class="chapter-icon">${idx}</span>
-                    <span class="chapter-title">${title}</span>
-                `;
-                container.appendChild(card);
-                idx++;
-            }
-        } catch(e) {}
-    }
-
-    if(!found){
-        container.innerHTML = '<div class="loading">لم يتم العثور على أي فصل مرفوع حالياً في هذا المستودع.</div>';
-    }
-
-    const tg = document.createElement("a");
-    tg.className = "telegram-btn";
-    tg.href = "https://t.me/M5M5P";
-    tg.innerHTML = "انضم لقناة التليجرام ✈️";
-    container.appendChild(tg);
-}
-
-window.onload = loadChapters;
-</script>
 </body>
 </html>
